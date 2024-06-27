@@ -33,7 +33,14 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Serve static files from the "assets" directory
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(
+	'/assets',
+	(req, res, next) => {
+		console.log(`Serving static file request: ${req.path}`);
+		next();
+	},
+	express.static(path.join(__dirname, 'assets'))
+);
 
 // Path to drinks data
 const drinksFilePath = path.join(__dirname, 'drinks.json');
