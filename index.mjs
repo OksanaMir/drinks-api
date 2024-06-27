@@ -46,6 +46,18 @@ app.get('/api/drinks', (req, res) => {
 	res.json(drinks);
 });
 
+// Get one drink by ID
+app.get('/api/drinks/:id', (req, res) => {
+	const { id } = req.params;
+	const drink = drinks.find(d => d.id === parseInt(id, 10));
+
+	if (drink) {
+		res.json(drink);
+	} else {
+		res.status(404).json({ error: 'Drink not found' });
+	}
+});
+
 // Update drink order status
 app.patch('/api/drinks/:id', async (req, res) => {
 	const { id } = req.params;
