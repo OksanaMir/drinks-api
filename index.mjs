@@ -21,7 +21,7 @@ app.use(
 			'authorization'
 		],
 		exposedHeaders: ['sessionId'],
-		origin: ['https://cafelora-2024.vercel.app/'],
+		origin: ['https://cafelora-2024.vercel.app'],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: false,
 		preflightContinue: false
