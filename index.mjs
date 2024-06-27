@@ -1,5 +1,4 @@
 import express from 'express';
-// import * as cors from 'cors';
 import cors from 'cors';
 import { promises as fs } from 'fs';
 import path from 'path';
@@ -27,6 +26,7 @@ app.use(
 		preflightContinue: false
 	})
 );
+
 const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
@@ -39,7 +39,13 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 const drinksFilePath = path.join(__dirname, 'drinks.json');
 
 // Load drinks data
-let drinks = JSON.parse(await fs.readFile(drinksFilePath, 'utf-8'));
+let drinks;
+try {
+	drinks = JSON.parse(await fs.readFile(drinksFilePath, 'utf-8'));
+} catch (error) {
+	console.error('Error reading drinks file:', error);
+	drinks = [];
+}
 
 // Get all drinks
 app.get('/api/drinks', (req, res) => {
@@ -64,11 +70,18 @@ app.patch('/api/drinks/:id', async (req, res) => {
 	const { op, path, value } = req.body[0];
 
 	if (op === 'replace' && path === '/ordered') {
-		const drink = drinks.find(d => d.id === parseInt(id));
+		const drink = drinks.find(d => d.id === parseInt(id, 10));
 		if (drink) {
 			drink.ordered = value;
-			await fs.writeFile(drinksFilePath, JSON.stringify(drinks, null, 2));
-			res.json(drink);
+			try {
+				await fs.writeFile(
+					drinksFilePath,
+					JSON.stringify(drinks, null, 2)
+				);
+				res.json(drink);
+			} catch (error) {
+				res.status(500).json({ error: 'Failed to update drink data' });
+			}
 		} else {
 			res.status(404).json({ error: 'Drink not found' });
 		}
