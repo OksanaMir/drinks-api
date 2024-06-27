@@ -1,4 +1,6 @@
 import express from 'express';
+// import * as cors from 'cors';
+import cors from 'cors';
 import { promises as fs } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -9,6 +11,22 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const app = express();
+
+app.use(
+	cors({
+		allowedHeaders: [
+			'sessionId',
+			'Content-Type',
+			'Authorization',
+			'authorization'
+		],
+		exposedHeaders: ['sessionId'],
+		origin: ['https://cafelora-2024.vercel.app/'],
+		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+		credentials: false,
+		preflightContinue: false
+	})
+);
 const PORT = process.env.PORT || 3000;
 
 // Middleware to parse JSON bodies
