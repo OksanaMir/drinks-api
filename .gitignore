@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# OS system files
+.DS_Store
+Thumbs.db
+
+# Build and temporary files
+.next/
+dist/
+.vercel/
+coverage/
+
+# Vercel output directory
+.vercel/output/
+
+# IDE and editor directories
+.vscode/
+.idea/
