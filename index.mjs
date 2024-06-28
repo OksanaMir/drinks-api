@@ -21,9 +21,10 @@ app.use(
 		],
 		exposedHeaders: ['sessionId'],
 		origin: [
-			'https://cafelora-2024.vercel.app',
-			'https://cafelora-2024.netlify.app',
-			'http://localhost:5173'
+			'*'
+			// 'https://cafelora-2024.vercel.app',
+			// 'https://cafelora-2024.netlify.app',
+			// 'http://localhost:5173'
 		],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: false,
