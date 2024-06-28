@@ -20,7 +20,11 @@ app.use(
 			'authorization'
 		],
 		exposedHeaders: ['sessionId'],
-		origin: ['https://cafelora-2024.vercel.app', 'http://localhost:5173'],
+		origin: [
+			'https://cafelora-2024.vercel.app',
+			'https://cafelora-2024.netlify.app',
+			'http://localhost:5173'
+		],
 		methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
 		credentials: false,
 		preflightContinue: false
@@ -69,6 +73,29 @@ app.get('/api/drinks/:id', (req, res) => {
 	} else {
 		res.status(404).json({ error: 'Drink not found' });
 	}
+	res.send(`
+	<html>
+    <body>
+      <script>
+        window.API_URL = "${
+			process.env.API_URL_PROD ||
+			process.env.API_URL ||
+			'http://localhost:4000/api/drinks'
+		}";
+        window.ASSETS_URL = "${
+			process.env.ASSETS_URL_PROD ||
+			process.env.ASSETS_URL ||
+			'http://localhost:4000/assets/img'
+		}";
+      </script>
+      <script src="${
+			process.env.ASSETS_URL_PROD ||
+			process.env.ASSETS_URL ||
+			'http://localhost:4000'
+		}/main.js"></script>
+    </body>
+    </html>
+  `);
 });
 
 // Update drink order status
